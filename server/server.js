@@ -36,6 +36,9 @@ app.get("/", (req, res) => {
 app.get("/test", (req, res) => {
   res.send("Hello World2!");
 });
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 // Error Handler
 app.use(routeNotFound);
 app.use(errorHandler);
@@ -45,7 +48,7 @@ const StartServer = async () => {
   try {
     await dbConnect();
     app.listen(PORT, () => {
-      console.log(`server in running on http://localhost:8000`);
+      console.log(`server in running on http://localhost:${PORT}`);
     });
   } catch (error) {
     console.log(error);
