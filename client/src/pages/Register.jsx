@@ -16,7 +16,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        "https://users-systems-server.onrender.com/api/v1/users/register/",
+        "https://users-systems.onrender.com/api/v1/users/register/",
         {
           username,
           email,

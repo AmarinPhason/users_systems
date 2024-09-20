@@ -13,7 +13,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://users-systems-server.onrender.com/api/v1/users/forgot-password",
+        "https://users-systems.onrender.com/api/v1/users/forgot-password",
         { email }
       );
       toast.success(response.data.message); // Show success toast

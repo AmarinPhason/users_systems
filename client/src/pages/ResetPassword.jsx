@@ -22,7 +22,7 @@ export default function ResetPassword() {
 
     try {
       const response = await axios.put(
-        `https://users-systems-server.onrender.com/api/v1/users/reset-password/${token}`,
+        `https://users-systems.onrender.com/api/v1/users/reset-password/${token}`,
         {
           newPassword,
         }

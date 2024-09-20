@@ -17,7 +17,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "https://users-systems-server.onrender.com/api/v1/users/login/",
+        "https://users-systems.onrender.com/api/v1/users/login/",
         {
           email,
           password,
