@@ -24,7 +24,7 @@ const corsOptions = {
   origin:
     process.env.NODE_ENV === "development"
       ? "http://localhost:5173"
-      : "https://users-systems-client.onrender.com",
+      : "https://users-systems-server.onrender.com",
   methods: ["GET", "POST", "PUT", "DELETE"], // อนุญาตเฉพาะ HTTP methods ที่ระบุ
   allowedHeaders: ["Content-Type", "Authorization"], // อนุญาตเฉพาะ headers ที่ระบุ
   credentials: true, // อนุญาตให้ส่ง credentials (เช่น cookies) ข้าม origin
