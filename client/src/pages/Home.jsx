@@ -10,7 +10,7 @@ const Home = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/users/all-username-and-profile"
+          "https://users-systems-server.onrender.com/api/v1/users/all-username-and-profile"
         );
         setUsers(response.data.data);
         setTotalUsers(response.data.count);

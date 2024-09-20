@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
       const fetchProfile = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:8000/api/v1/users/my-profile",
+            "https://users-systems-server.onrender.com/api/v1/users/my-profile",
             {
               withCredentials: true,
             }
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/users/logout",
+        "https://users-systems-server.onrender.com/api/v1/users/logout",
         {},
         { withCredentials: true }
       );

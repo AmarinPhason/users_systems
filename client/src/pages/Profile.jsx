@@ -30,7 +30,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/users/my-profile",
+          "https://users-systems-server.onrender.com/api/v1/users/my-profile",
           { withCredentials: true }
         );
         setProfile(response.data.data);
@@ -81,7 +81,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/v1/users/update-profile",
+        "https://users-systems-server.onrender.com/api/v1/users/update-profile",
         updateData,
         {
           headers: {
@@ -124,7 +124,7 @@ const Profile = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          "http://localhost:8000/api/v1/users/delete-account",
+          "https://users-systems-server.onrender.com/api/v1/users/delete-account",
           {
             withCredentials: true,
           }
