@@ -36,9 +36,7 @@ app.get("/", (req, res) => {
 app.get("/test", (req, res) => {
   res.send("Hello World2!");
 });
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+
 // Error Handler
 app.use(routeNotFound);
 app.use(errorHandler);
