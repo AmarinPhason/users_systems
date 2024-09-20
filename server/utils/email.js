@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendPasswordResetEmail = async (email, resetUrl) => {
   const mailOptions = {
-    from: `"Your App Name" ${process.env.EMAIL_USER}`, // ส่งจากอีเมลของคุณ
+    from: `"Users Systems" ${process.env.EMAIL_USER}`, // ส่งจากอีเมลของคุณ
     to: email,
     subject: "Password Reset Request",
     text: `You are receiving this email because you (or someone else) have requested to reset the password for your account.

@@ -2,6 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import path from "path";
 import cloudinary from "cloudinary";
 import cookieParser from "cookie-parser";
 import { dbConnect } from "./database/dbConnect.js";
@@ -13,6 +16,10 @@ cloudinary.v2.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+// Define __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "development"
@@ -38,6 +45,11 @@ app.get("/", (req, res) => {
 });
 app.get("/test", (req, res) => {
   res.send("Hello World2!");
+});
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // Error Handler
