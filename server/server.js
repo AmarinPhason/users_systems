@@ -14,7 +14,7 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://users-systems-client.onrender.com",
   methods: ["GET", "POST", "PUT", "DELETE"], // อนุญาตเฉพาะ HTTP methods ที่ระบุ
   allowedHeaders: ["Content-Type", "Authorization"], // อนุญาตเฉพาะ headers ที่ระบุ
   credentials: true, // อนุญาตให้ส่ง credentials (เช่น cookies) ข้าม origin
