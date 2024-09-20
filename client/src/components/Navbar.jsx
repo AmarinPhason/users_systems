@@ -22,7 +22,7 @@ const Navbar = () => {
       const fetchProfile = async () => {
         try {
           const response = await axios.get(
-            "https://users-systems-server.onrender.com/api/v1/users/my-profile",
+            "https://users-systems.onrender.com/api/v1/users/my-profile",
             {
               withCredentials: true,
             }
