@@ -258,7 +258,7 @@ export const forgotPasswordCtrl = async (req, res, next) => {
     const resetToken = user.createPasswordResetToken();
     await user.save();
 
-    const frontendUrl = "https://users-systems-client.onrender.com"; // Frontend base URL
+    const frontendUrl = "https://users-systems.onrender.com"; // Frontend base URL
     const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
     await sendPasswordResetEmail(user.email, resetUrl);
 
