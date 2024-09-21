@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
@@ -13,7 +16,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://users-systems.onrender.com/api/v1/users/forgot-password",
+        `${baseURL}/api/v1/users/forgot-password`,
         { email }
       );
       toast.success(response.data.message); // Show success toast

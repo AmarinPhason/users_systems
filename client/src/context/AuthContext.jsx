@@ -1,6 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
-
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -20,7 +23,7 @@ export const AuthProvider = ({ children }) => {
       const fetchProfile = async () => {
         try {
           const response = await axios.get(
-            "https://users-systems.onrender.com/api/v1/users/my-profile",
+            `${baseURL}/api/v1/users/my-profile`,
             {
               withCredentials: true,
             }
@@ -47,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post(
-        "https://users-systems.onrender.com/api/v1/users/logout",
+        `${baseURL}/api/v1/users/logout`,
         {},
         { withCredentials: true }
       );

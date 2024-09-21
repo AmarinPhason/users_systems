@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
+
+console.log(baseURL);
 
 const Home = () => {
   const [users, setUsers] = useState([]);
@@ -10,7 +16,7 @@ const Home = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "https://users-systems.onrender.com/api/v1/users/all-username-and-profile"
+          `${baseURL}/api/v1/users/all-username-and-profile`
         );
         setUsers(response.data.data);
         setTotalUsers(response.data.count);

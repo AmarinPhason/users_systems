@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { HiHomeModern } from "react-icons/hi2";
+import { IoMdLogIn } from "react-icons/io";
 import { useAuth } from "../context/AuthContext";
 import {
   FaHome,
@@ -9,6 +11,10 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import axios from "axios";
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
 
 const Navbar = () => {
   const { isAuthenticated, logout, profilePicture, username } = useAuth();
@@ -22,7 +28,7 @@ const Navbar = () => {
       const fetchProfile = async () => {
         try {
           const response = await axios.get(
-            "https://users-systems.onrender.com/api/v1/users/my-profile",
+            `${baseURL}/api/v1/users/my-profile`,
             {
               withCredentials: true,
             }
@@ -48,12 +54,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 p-4 shadow-md">
+    <nav className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white font-bold text-xl flex items-center">
-          <Link to="/" className="flex items-center">
-            <FaHome className="mr-2" />
-            MyWebsite
+          <Link to="/" className="flex items-center hover:text-gray-300">
+            <HiHomeModern className="mr-2" />
+            <h1>Users Systems </h1>
           </Link>
         </div>
         <div className="flex items-center space-x-4">
@@ -63,8 +69,9 @@ const Navbar = () => {
               onMouseEnter={() => setIsAuthDropdownOpen(true)}
               onMouseLeave={() => setIsAuthDropdownOpen(false)}
             >
-              <button className="text-white hover:bg-blue-700 px-4 py-2 rounded-md transition duration-300 flex items-center">
-                <FaSignInAlt className="mr-2" />
+              <button className="text-white hover:bg-blue-900 hover:text-gray-100 px-4 py-2 rounded-md transition duration-300 flex items-center font-bold">
+                {/* <FaSignInAlt className="mr-2" /> */}
+                <IoMdLogIn className="mr-2" />
                 Login
               </button>
 
@@ -78,7 +85,8 @@ const Navbar = () => {
                   className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
                   onClick={() => setIsAuthDropdownOpen(false)}
                 >
-                  <FaSignInAlt className="mr-2" />
+                  {/* <FaSignInAlt className="mr-2" /> */}
+                  <IoMdLogIn className="mr-2" />
                   Login
                 </Link>
                 <Link
@@ -93,13 +101,12 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              {/* Profile Dropdown */}
               <div
                 className="relative group"
                 onMouseEnter={() => setIsProfileDropdownOpen(true)}
                 onMouseLeave={() => setIsProfileDropdownOpen(false)}
               >
-                <button className="flex items-center space-x-2 text-white hover:bg-blue-700 px-4 py-2 rounded-md transition duration-300">
+                <button className="flex items-center space-x-2 text-white hover:bg-blue-900 hover:text-gray-100 px-4 py-2 rounded-md transition duration-300">
                   <img
                     src={profilePicture}
                     alt="Profile"

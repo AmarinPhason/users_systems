@@ -3,7 +3,10 @@ import axios from "axios";
 import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 import { useNavigate, useParams } from "react-router-dom"; // Import useNavigate and useParams
-
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
 export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const { token } = useParams(); // Get token from URL parameters
@@ -22,7 +25,7 @@ export default function ResetPassword() {
 
     try {
       const response = await axios.put(
-        `https://users-systems.onrender.com/api/v1/users/reset-password/${token}`,
+        `${baseURL}/api/v1/users/reset-password/${token}`,
         {
           newPassword,
         }

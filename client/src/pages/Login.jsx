@@ -5,7 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +20,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "https://users-systems.onrender.com/api/v1/users/login/",
+        `${baseURL}/api/v1/users/login/`,
         {
           email,
           password,
@@ -75,24 +78,26 @@ export default function Login() {
         </button>
       </form>
       <div className="mt-4 text-center">
-        <p className="text-sm">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600"
-          >
-            Register here
-          </Link>
-        </p>
-        <p className="text-sm mt-2">
-          Forgot your password?{" "}
-          <Link
-            to="/forgot-password"
-            className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600"
-          >
-            Reset it here
-          </Link>
-        </p>
+        <div className="bg-gray-100 p-4 rounded-md shadow-md">
+          <p className="text-sm mb-2">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 transition-all duration-300"
+            >
+              Register here
+            </Link>
+          </p>
+          <p className="text-sm">
+            Forgot your password?{" "}
+            <Link
+              to="/forgot-password"
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 transition-all duration-300"
+            >
+              Reset it here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

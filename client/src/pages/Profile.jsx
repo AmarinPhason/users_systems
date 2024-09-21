@@ -3,7 +3,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
 const Profile = () => {
   const { updateProfilePicture, updateUsername, logout } = useAuth(); // Added logout function from context
   const [tempImageUrl, setTempImageUrl] = useState(null);
@@ -29,10 +32,9 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(
-          "https://users-systems.onrender.com/api/v1/users/my-profile",
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${baseURL}/api/v1/users/my-profile`, {
+          withCredentials: true,
+        });
         setProfile(response.data.data);
         setFormData((prevData) => ({
           ...prevData,
@@ -81,7 +83,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        "https://users-systems.onrender.com/api/v1/users/update-profile",
+        `${baseURL}/api/v1/users/update-profile`,
         updateData,
         {
           headers: {
@@ -123,12 +125,9 @@ const Profile = () => {
 
     if (confirmDelete) {
       try {
-        await axios.delete(
-          "https://users-systems.onrender.com/api/v1/users/delete-account",
-          {
-            withCredentials: true,
-          }
-        );
+        await axios.delete(`${baseURL}/api/v1/users/delete-account`, {
+          withCredentials: true,
+        });
 
         // Clear authentication context or state
         logout();
@@ -167,6 +166,7 @@ const Profile = () => {
             ref={fileInputRef}
             onChange={handleInputChange}
             className="hidden"
+            accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/svg+xml" // เพิ่มตรงนี้
           />
         </div>
         <form onSubmit={handleSubmit} encType="multipart/form-data">

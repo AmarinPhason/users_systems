@@ -4,7 +4,10 @@ import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Link } from "react-router-dom"; // Import Link
-
+const baseURL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://users-systems.onrender.com";
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -15,14 +18,11 @@ export default function Register() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "https://users-systems.onrender.com/api/v1/users/register/",
-        {
-          username,
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${baseURL}/api/v1/users/register/`, {
+        username,
+        email,
+        password,
+      });
       toast.success(response.data.message); // Show success toast
 
       // Navigate to /login after successful registration
