@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css"; // Import toast styling
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
+import CreateNote from "./pages/CreateNote";
+import AllMyNotes from "./pages/AllMyNotes";
 
 function App() {
   return (
@@ -29,6 +31,14 @@ function App() {
           <Route
             path="/profile"
             element={<PrivateRoute element={<Profile />} />}
+          />
+          <Route
+            path="/create-note"
+            element={<PrivateRoute element={<CreateNote />} />}
+          />
+          <Route
+            path="/all-my-notes"
+            element={<PrivateRoute element={<AllMyNotes />} />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>

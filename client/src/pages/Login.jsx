@@ -79,7 +79,7 @@ export default function Login() {
       </form>
       <div className="mt-4 text-center">
         <div className="bg-gray-100 p-4 rounded-md shadow-md">
-          <p className="text-sm mb-2">
+          <p className="text-sm mb-2 ">
             Don't have an account?{" "}
             <Link
               to="/register"
@@ -88,6 +88,10 @@ export default function Login() {
               Register here
             </Link>
           </p>
+        </div>
+      </div>
+      <div className="mt-4 text-center">
+        <div className="bg-gray-100 p-4 rounded-md shadow-md">
           <p className="text-sm">
             Forgot your password?{" "}
             <Link

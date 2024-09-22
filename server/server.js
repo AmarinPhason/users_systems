@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import { dbConnect } from "./database/dbConnect.js";
 import { errorHandler, routeNotFound } from "./middlewares/errorHandler.js";
 import userRouter from "./routes/user.route.js";
+import noteRouter from "./routes/note.rote.js";
 dotenv.config();
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -40,6 +41,7 @@ app.use(cors(corsOptions));
 
 // Routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/notes", noteRouter);
 
 app.get("/test", (req, res) => {
   res.send("Hello World2!");

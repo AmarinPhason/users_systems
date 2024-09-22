@@ -10,12 +10,14 @@ const baseURL =
     : "https://users-systems.onrender.com";
 export default function Register() {
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false); // State for loading
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // Use useNavigate for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true
 
     try {
       const response = await axios.post(`${baseURL}/api/v1/users/register/`, {
@@ -33,6 +35,8 @@ export default function Register() {
       } else {
         toast.error("Something went wrong"); // General error message
       }
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
@@ -81,17 +85,26 @@ export default function Register() {
         </div>
         <button
           type="submit"
-          className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className={`w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={loading} // Disable button when loading
         >
-          Register
+          {loading ? "Registering..." : "Register"}
         </button>
+
         <div className="mt-4 text-center">
-          <p className="text-sm">
-            Have an account?{" "}
-            <Link to="/login" className="text-blue-500 hover:underline">
-              Login here
-            </Link>
-          </p>
+          <div className="bg-gray-100 p-4 rounded-md shadow-md">
+            <p className="text-sm">
+              Have an account?{" "}
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 transition-all duration-300"
+              >
+                Login here
+              </Link>
+            </p>
+          </div>
         </div>
       </form>
     </div>

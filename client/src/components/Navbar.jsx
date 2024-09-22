@@ -4,13 +4,14 @@ import { HiHomeModern } from "react-icons/hi2";
 import { IoMdLogIn } from "react-icons/io";
 import { useAuth } from "../context/AuthContext";
 import {
-  FaHome,
   FaUser,
   FaSignInAlt,
   FaUserPlus,
   FaSignOutAlt,
+  FaStickyNote,
 } from "react-icons/fa";
 import axios from "axios";
+
 const baseURL =
   import.meta.env.VITE_NODE_ENV === "development"
     ? "http://localhost:8000"
@@ -23,6 +24,8 @@ const Navbar = () => {
   const [profilePictureUrl, setProfilePicture] = useState(null);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isAuthDropdownOpen, setIsAuthDropdownOpen] = useState(false);
+  const [isNoteDropdownOpen, setIsNoteDropdownOpen] = useState(false); // สถานะสำหรับ dropdown ของโน้ต
+
   useEffect(() => {
     if (isAuthenticated) {
       const fetchProfile = async () => {
@@ -59,7 +62,7 @@ const Navbar = () => {
         <div className="text-white font-bold text-xl flex items-center">
           <Link to="/" className="flex items-center hover:text-gray-300">
             <HiHomeModern className="mr-2" />
-            <h1>Users Systems </h1>
+            <h1>Users Systems</h1>
           </Link>
         </div>
         <div className="flex items-center space-x-4">
@@ -70,11 +73,9 @@ const Navbar = () => {
               onMouseLeave={() => setIsAuthDropdownOpen(false)}
             >
               <button className="text-white hover:bg-blue-900 hover:text-gray-100 px-4 py-2 rounded-md transition duration-300 flex items-center font-bold">
-                {/* <FaSignInAlt className="mr-2" /> */}
                 <IoMdLogIn className="mr-2" />
                 Login
               </button>
-
               <div
                 className={`absolute top-full right-0 mt-1 w-40 bg-white text-black shadow-lg rounded-md z-10 transition-opacity duration-300 ${
                   isAuthDropdownOpen ? "opacity-100" : "opacity-0"
@@ -85,7 +86,6 @@ const Navbar = () => {
                   className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
                   onClick={() => setIsAuthDropdownOpen(false)}
                 >
-                  {/* <FaSignInAlt className="mr-2" /> */}
                   <IoMdLogIn className="mr-2" />
                   Login
                 </Link>
@@ -101,6 +101,37 @@ const Navbar = () => {
             </div>
           ) : (
             <>
+              <div
+                className="relative group"
+                onMouseEnter={() => setIsNoteDropdownOpen(true)}
+                onMouseLeave={() => setIsNoteDropdownOpen(false)}
+              >
+                <button className="flex items-center space-x-2 text-white hover:bg-blue-900 hover:text-gray-100 px-4 py-2 rounded-md transition duration-300">
+                  <FaStickyNote className="mr-2" />
+                  Note
+                </button>
+                <div
+                  className={`absolute top-full right-0 mt-1 w-40 bg-white text-black shadow-lg rounded-md z-10 transition-opacity duration-300 ${
+                    isNoteDropdownOpen ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  <Link
+                    to="/create-note"
+                    className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
+                    onClick={() => setIsNoteDropdownOpen(false)}
+                  >
+                    📝Create Note
+                  </Link>
+                  <Link
+                    to="/all-my-notes"
+                    className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
+                    onClick={() => setIsNoteDropdownOpen(false)}
+                  >
+                    📒My Notes
+                  </Link>
+                </div>
+              </div>
+
               <div
                 className="relative group"
                 onMouseEnter={() => setIsProfileDropdownOpen(true)}
