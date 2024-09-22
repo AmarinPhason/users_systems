@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { HiHomeModern } from "react-icons/hi2";
 import { IoMdLogIn } from "react-icons/io";
 import { useAuth } from "../context/AuthContext";
+import { getAuth, signOut } from "firebase/auth";
 import {
   FaUser,
   FaSignInAlt,
@@ -21,7 +22,9 @@ const Navbar = () => {
   const { isAuthenticated, logout, profilePicture, username } = useAuth();
   const navigate = useNavigate();
   const [usernameState, setUsername] = useState("");
-  const [profilePictureUrl, setProfilePicture] = useState(null);
+  const [profilePictureUrl, setProfilePicture] = useState(
+    "https://via.placeholder.com/150"
+  );
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isAuthDropdownOpen, setIsAuthDropdownOpen] = useState(false);
   const [isNoteDropdownOpen, setIsNoteDropdownOpen] = useState(false); // สถานะสำหรับ dropdown ของโน้ต
@@ -36,6 +39,7 @@ const Navbar = () => {
               withCredentials: true,
             }
           );
+          console.log(response.data);
           setProfilePicture(response.data.data.profilePicture.url);
           setUsername(response.data.data.username);
         } catch (error) {
@@ -48,12 +52,10 @@ const Navbar = () => {
   }, [isAuthenticated]);
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+    const auth = getAuth();
+    await signOut(auth);
+    // ล้างข้อมูลผู้ใช้ใน context และ localStorage ที่เกี่ยวข้อง
+    logout(); // เรียกใช้ฟังก์ชัน logout ใน AuthContext
   };
 
   return (

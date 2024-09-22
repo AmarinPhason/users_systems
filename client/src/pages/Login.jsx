@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import OAuth from "../components/OAuth";
 const baseURL =
   import.meta.env.VITE_NODE_ENV === "development"
     ? "http://localhost:8000"
@@ -76,6 +77,7 @@ export default function Login() {
         >
           Login
         </button>
+        <OAuth />
       </form>
       <div className="mt-4 text-center">
         <div className="bg-gray-100 p-4 rounded-md shadow-md">

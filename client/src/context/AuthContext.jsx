@@ -1,9 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
+
 const baseURL =
   import.meta.env.VITE_NODE_ENV === "development"
     ? "http://localhost:8000"
     : "https://users-systems.onrender.com";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -39,11 +41,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  const login = (userData) => {
+  const login = async (userData) => {
     setIsAuthenticated(true);
     if (userData) {
       setProfilePicture(userData.profilePicture);
       setUsername(userData.username);
+      localStorage.setItem("userProfile", JSON.stringify(userData)); // Optionally store user data in localStorage
     }
   };
 
@@ -79,7 +82,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         updateProfilePicture,
-        updateUsername, // Provide updateUsername method
+        updateUsername,
       }}
     >
       {children}

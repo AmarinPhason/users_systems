@@ -7,6 +7,7 @@ import {
   getMyProfileCtrl,
   getUserByIdCtrl,
   getUsersNameAndProfileImageCtrl,
+  googleOAuthCtrl,
   loginCtrl,
   logoutCtrl,
   registerCtrl,
@@ -30,7 +31,7 @@ userRouter.post("/register", registerCtrl);
 userRouter.post("/login", loginCtrl);
 userRouter.post("/logout", logoutCtrl);
 userRouter.post("/forgot-password", forgotPasswordCtrl);
-
+userRouter.post("/google", googleOAuthCtrl);
 // methods PUT
 userRouter.put(
   "/update-profile",

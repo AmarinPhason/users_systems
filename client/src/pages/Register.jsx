@@ -4,6 +4,7 @@ import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Link } from "react-router-dom"; // Import Link
+import OAuth from "../components/OAuth";
 const baseURL =
   import.meta.env.VITE_NODE_ENV === "development"
     ? "http://localhost:8000"
@@ -92,6 +93,7 @@ export default function Register() {
         >
           {loading ? "Registering..." : "Register"}
         </button>
+        <OAuth />
 
         <div className="mt-4 text-center">
           <div className="bg-gray-100 p-4 rounded-md shadow-md">

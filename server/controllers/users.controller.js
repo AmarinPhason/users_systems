@@ -6,6 +6,7 @@ import { getDataUri } from "../utils/feature.js";
 import path from "path";
 import { setCookieOptions } from "../utils/cookieOptions.js";
 import { sendPasswordResetEmail } from "../utils/email.js";
+import { Note } from "../models/note.model.js";
 export const registerCtrl = async (req, res, next) => {
   const { username, email, password } = req.body;
   try {
@@ -213,6 +214,8 @@ export const deleteUserByIdCtrl = async (req, res, next) => {
     } else {
       console.log("No previous image to delete.");
     }
+    // ลบโน้ตที่เกี่ยวข้องกับผู้ใช้
+    await Note.deleteMany({ userId: req.user.id });
     await user.deleteOne();
     res.status(200).json({
       message: "Delete user successfully",
@@ -237,6 +240,8 @@ export const deleteMyAccountCtrl = async (req, res, next) => {
     } else {
       console.log("No previous image to delete.");
     }
+    // ลบโน้ตที่เกี่ยวข้องกับผู้ใช้
+    await Note.deleteMany({ user: req.user.id });
     await user.deleteOne();
     res.status(200).json({
       message: "Delete user successfully",
@@ -310,6 +315,51 @@ export const getUsersNameAndProfileImageCtrl = async (req, res, next) => {
       count: countDoc,
       data: users,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Google OAuth
+
+export const googleOAuthCtrl = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      const token = user.getJwtToken();
+      if (!token) {
+        return next(new AppError("something went wrong", 400));
+      }
+
+      res.status(200).cookie("access_token", token, setCookieOptions()).json({
+        message: "Login successful",
+        data: user,
+        token,
+      });
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const newUser = new User({
+        username: req.body.displayName,
+        email: req.body.email,
+        password: generatedPassword,
+        profilePicture: {
+          public_id: null,
+          url: req.body.photoURL,
+        },
+      });
+      await newUser.save();
+      const token = newUser.getJwtToken();
+      if (!token) {
+        return next(new AppError("something went wrong", 400));
+      }
+      res.status(200).cookie("access_token", token, setCookieOptions()).json({
+        message: "Login successful",
+        data: newUser,
+        token,
+      });
+    }
   } catch (error) {
     next(error);
   }
