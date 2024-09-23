@@ -40,7 +40,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors(corsOptions));
-const helmet = require("helmet");
 
 app.use(
   helmet({
