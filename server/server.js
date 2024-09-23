@@ -41,43 +41,43 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors(corsOptions));
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "https://apis.google.com",
-          "https://securetoken.googleapis.com",
-          "https://www.gstatic.com",
-          "https://accounts.google.com",
-        ],
-        connectSrc: [
-          "'self'",
-          "https://securetoken.googleapis.com",
-          "https://firebase.googleapis.com",
-          "https://identitytoolkit.googleapis.com",
-          "https://www.googleapis.com",
-        ],
-        imgSrc: [
-          "'self'",
-          "data:",
-          "https://res.cloudinary.com",
-          "https://your-image-url.com",
-        ],
-        frameSrc: [
-          "'self'",
-          "https://*.firebaseapp.com",
-          "https://*.google.com",
-        ],
-        formAction: ["'self'", "https://accounts.google.com"], // เพิ่มบรรทัดนี้
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: [],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: [
+//           "'self'",
+//           "https://apis.google.com",
+//           "https://securetoken.googleapis.com",
+//           "https://www.gstatic.com",
+//           "https://accounts.google.com",
+//         ],
+//         connectSrc: [
+//           "'self'",
+//           "https://securetoken.googleapis.com",
+//           "https://firebase.googleapis.com",
+//           "https://identitytoolkit.googleapis.com",
+//           "https://www.googleapis.com",
+//         ],
+//         imgSrc: [
+//           "'self'",
+//           "data:",
+//           "https://res.cloudinary.com",
+//           "https://your-image-url.com",
+//         ],
+//         frameSrc: [
+//           "'self'",
+//           "https://*.firebaseapp.com",
+//           "https://*.google.com",
+//         ],
+//         formAction: ["'self'", "https://accounts.google.com"], // เพิ่มบรรทัดนี้
+//         objectSrc: ["'none'"],
+//         upgradeInsecureRequests: [],
+//       },
+//     },
+//   })
+// );
 
 // Routes
 app.use("/api/v1/users", userRouter);
