@@ -40,30 +40,37 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors(corsOptions));
+const helmet = require("helmet");
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"],
+        defaultSrc: ["'self'"], // Allow loading from the same origin
         scriptSrc: [
-          "'self'",
-          "https://apis.google.com",
-          "https://securetoken.googleapis.com",
-          "trusted-scripts.com",
+          "'self'", // Allow scripts from the same origin
+          "https://apis.google.com", // Allow Google API scripts
+          "https://securetoken.googleapis.com", // Allow Firebase scripts
+          "trusted-scripts.com", // Other trusted scripts
         ],
         connectSrc: [
-          "'self'",
-          "https://securetoken.googleapis.com",
-          "https://firebase.googleapis.com",
+          "'self'", // Allow connections from the same origin
+          "https://securetoken.googleapis.com", // Firebase token endpoint
+          "https://firebase.googleapis.com", // Firebase API
+          "https://identitytoolkit.googleapis.com", // Firebase identity API
         ],
         imgSrc: [
-          "'self'",
-          "data:",
-          "https://res.cloudinary.com",
-          "https://your-image-url.com",
+          "'self'", // Allow images from the same origin
+          "data:", // Allow data URIs for inline images
+          "https://res.cloudinary.com", // Allow Cloudinary images
+          "https://your-image-url.com", // Custom image URLs
         ],
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: [],
+        frameSrc: [
+          "'self'", // Allow iframes from the same origin
+          "https://firebaseapp.com", // Allow Firebase hosted iframes
+        ],
+        objectSrc: ["'none'"], // Block loading any object (like Flash)
+        upgradeInsecureRequests: [], // Automatically upgrade HTTP to HTTPS
       },
     },
   })
