@@ -45,32 +45,35 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"], // Allow loading from the same origin
+        defaultSrc: ["'self'"],
         scriptSrc: [
-          "'self'", // Allow scripts from the same origin
-          "https://apis.google.com", // Allow Google API scripts
-          "https://securetoken.googleapis.com", // Allow Firebase scripts
-          "trusted-scripts.com", // Other trusted scripts
+          "'self'",
+          "https://apis.google.com",
+          "https://securetoken.googleapis.com",
+          "https://www.gstatic.com",
+          "https://accounts.google.com",
         ],
         connectSrc: [
-          "'self'", // Allow connections from the same origin
-          "https://securetoken.googleapis.com", // Firebase token endpoint
-          "https://firebase.googleapis.com", // Firebase API
-          "https://identitytoolkit.googleapis.com", // Firebase identity API
+          "'self'",
+          "https://securetoken.googleapis.com",
+          "https://firebase.googleapis.com",
+          "https://identitytoolkit.googleapis.com",
+          "https://www.googleapis.com",
         ],
         imgSrc: [
-          "'self'", // Allow images from the same origin
-          "data:", // Allow data URIs for inline images
-          "https://res.cloudinary.com", // Allow Cloudinary images
-          "https://your-image-url.com", // Custom image URLs
+          "'self'",
+          "data:",
+          "https://res.cloudinary.com",
+          "https://your-image-url.com",
         ],
         frameSrc: [
-          "'self'", // Allow iframes from the same origin
-          "https://firebaseapp.com", // Allow Firebase hosted iframes
-          "https://users-systems.firebaseapp.com/", // Add this line
+          "'self'",
+          "https://*.firebaseapp.com",
+          "https://*.google.com",
         ],
-        objectSrc: ["'none'"], // Block loading any object (like Flash)
-        upgradeInsecureRequests: [], // Automatically upgrade HTTP to HTTPS
+        formAction: ["'self'", "https://accounts.google.com"], // เพิ่มบรรทัดนี้
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
       },
     },
   })
