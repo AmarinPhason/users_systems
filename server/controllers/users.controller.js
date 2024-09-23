@@ -215,7 +215,7 @@ export const deleteUserByIdCtrl = async (req, res, next) => {
       console.log("No previous image to delete.");
     }
     // ลบโน้ตที่เกี่ยวข้องกับผู้ใช้
-    await Note.deleteMany({ userId: req.user.id });
+    await Note.deleteMany({ user: req.user.id });
     await user.deleteOne();
     res.status(200).json({
       message: "Delete user successfully",
@@ -346,7 +346,7 @@ export const googleOAuthCtrl = async (req, res, next) => {
         password: generatedPassword,
         profilePicture: {
           public_id: null,
-          url: req.body.photoURL,
+          url: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
         },
       });
       await newUser.save();
@@ -360,6 +360,21 @@ export const googleOAuthCtrl = async (req, res, next) => {
         token,
       });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUsername = async (req, res, next) => {
+  try {
+    const users = await User.find().select("username");
+    const countDoc = await User.countDocuments();
+
+    res.status(200).json({
+      message: "Get users successfully",
+      count: countDoc,
+      data: users,
+    });
   } catch (error) {
     next(error);
   }

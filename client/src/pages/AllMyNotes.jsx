@@ -114,7 +114,6 @@ const AllMyNotes = () => {
                   className="border rounded p-2 mb-2 w-full h-64 overflow-y-auto resize-none"
                   required
                 />
-
                 <select
                   id={`select-${note._id}`}
                   defaultValue={
@@ -140,7 +139,7 @@ const AllMyNotes = () => {
                 </button>
               </form>
             ) : (
-              <>
+              <div>
                 <div className="flex justify-between items-center">
                   <h2 className="text-xl font-semibold">{note.title}</h2>
                   <div className="flex space-x-2">
@@ -159,18 +158,15 @@ const AllMyNotes = () => {
                   </div>
                 </div>
                 <hr className="my-4 border-t border-gray-400" />
-
                 <p className="mt-2 text-left whitespace-pre-wrap">
                   {note.content}
                 </p>
-
                 <p
                   className={`${
                     note.isCompleted ? "text-green-500" : "text-red-500"
                   } mt-2`}
                 >
-                  <hr className="my-4 border-t border-gray-400" />
-                  Note Status:
+                  Note Status:{" "}
                   {note.isCompleted ? " ☑️Completed" : "❌Not Completed"}
                 </p>
                 <div className="flex justify-between text-gray-500 mt-2">
@@ -182,9 +178,8 @@ const AllMyNotes = () => {
                     Updated at: {new Date(note.updatedAt).toLocaleString()}
                   </p>
                 )}
-                {/* เส้นแบ่งระหว่างโน้ต */}
                 <hr className="my-4 border-t border-gray-400" />
-              </>
+              </div>
             )}
           </li>
         ))}

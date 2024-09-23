@@ -10,7 +10,9 @@ import cookieParser from "cookie-parser";
 import { dbConnect } from "./database/dbConnect.js";
 import { errorHandler, routeNotFound } from "./middlewares/errorHandler.js";
 import userRouter from "./routes/user.route.js";
+import helmet from "helmet";
 import noteRouter from "./routes/note.rote.js";
+import taskRouter from "./routes/task.route.js";
 dotenv.config();
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -38,10 +40,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors(corsOptions));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "trusted-scripts.com"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  })
+);
 
 // Routes
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/notes", noteRouter);
+app.use("/api/v1/tasks", taskRouter);
 
 app.get("/test", (req, res) => {
   res.send("Hello World2!");

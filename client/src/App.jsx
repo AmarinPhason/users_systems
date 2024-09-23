@@ -15,6 +15,9 @@ import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import CreateNote from "./pages/CreateNote";
 import AllMyNotes from "./pages/AllMyNotes";
+import CreateTask from "./pages/CreateTask";
+import AssignedTasks from "./pages/AssignedTasks";
+import MyTasks from "./pages/MyTasks";
 
 function App() {
   return (
@@ -39,6 +42,18 @@ function App() {
           <Route
             path="/all-my-notes"
             element={<PrivateRoute element={<AllMyNotes />} />}
+          />
+          <Route
+            path="/create-task"
+            element={<PrivateRoute element={<CreateTask />} />}
+          />
+          <Route
+            path="/assigned-tasks"
+            element={<PrivateRoute element={<AssignedTasks />} />}
+          />
+          <Route
+            path="/my-tasks"
+            element={<PrivateRoute element={<MyTasks />} />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>

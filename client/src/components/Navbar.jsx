@@ -4,12 +4,13 @@ import { HiHomeModern } from "react-icons/hi2";
 import { IoMdLogIn } from "react-icons/io";
 import { useAuth } from "../context/AuthContext";
 import { getAuth, signOut } from "firebase/auth";
+
 import {
   FaUser,
-  FaSignInAlt,
   FaUserPlus,
   FaSignOutAlt,
   FaStickyNote,
+  FaTasks, // Add the task icon
 } from "react-icons/fa";
 import axios from "axios";
 
@@ -22,12 +23,11 @@ const Navbar = () => {
   const { isAuthenticated, logout, profilePicture, username } = useAuth();
   const navigate = useNavigate();
   const [usernameState, setUsername] = useState("");
-  const [profilePictureUrl, setProfilePicture] = useState(
-    "https://via.placeholder.com/150"
-  );
+  const [profilePictureUrl, setProfilePicture] = useState("");
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isAuthDropdownOpen, setIsAuthDropdownOpen] = useState(false);
-  const [isNoteDropdownOpen, setIsNoteDropdownOpen] = useState(false); // สถานะสำหรับ dropdown ของโน้ต
+  const [isNoteDropdownOpen, setIsNoteDropdownOpen] = useState(false);
+  const [isTaskDropdownOpen, setIsTaskDropdownOpen] = useState(false); // Add a new state for the task dropdown
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -39,7 +39,6 @@ const Navbar = () => {
               withCredentials: true,
             }
           );
-          console.log(response.data);
           setProfilePicture(response.data.data.profilePicture.url);
           setUsername(response.data.data.username);
         } catch (error) {
@@ -54,8 +53,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     const auth = getAuth();
     await signOut(auth);
-    // ล้างข้อมูลผู้ใช้ใน context และ localStorage ที่เกี่ยวข้อง
-    logout(); // เรียกใช้ฟังก์ชัน logout ใน AuthContext
+    logout(); // Use the logout function from AuthContext
   };
 
   return (
@@ -67,7 +65,7 @@ const Navbar = () => {
             <h1>Users Systems</h1>
           </Link>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-20">
           {!isAuthenticated ? (
             <div
               className="relative group"
@@ -103,39 +101,80 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <div
-                className="relative group"
-                onMouseEnter={() => setIsNoteDropdownOpen(true)}
-                onMouseLeave={() => setIsNoteDropdownOpen(false)}
-              >
-                <button className="flex items-center space-x-2 text-white hover:bg-blue-900 hover:text-gray-100 px-4 py-2 rounded-md transition duration-300">
-                  <FaStickyNote className="mr-2" />
-                  Note
-                </button>
+              <div className="flex items-center space-x-8">
                 <div
-                  className={`absolute top-full right-0 mt-1 w-40 bg-white text-black shadow-lg rounded-md z-10 transition-opacity duration-300 ${
-                    isNoteDropdownOpen ? "opacity-100" : "opacity-0"
-                  }`}
+                  className="relative group"
+                  onMouseEnter={() => setIsNoteDropdownOpen(true)}
+                  onMouseLeave={() => setIsNoteDropdownOpen(false)}
                 >
-                  <Link
-                    to="/create-note"
-                    className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
-                    onClick={() => setIsNoteDropdownOpen(false)}
+                  <button className="flex items-center space-x-2 text-white hover:bg-blue-900 hover:text-gray-100 px-4 py-2 rounded-md transition duration-300">
+                    <FaStickyNote className="mr-2" />
+                    Note
+                  </button>
+                  <div
+                    className={`absolute top-full right-0 mt-1 w-40 bg-white text-black shadow-lg rounded-md z-10 transition-opacity duration-300 ${
+                      isNoteDropdownOpen ? "opacity-100" : "opacity-0"
+                    }`}
                   >
-                    📝Create Note
-                  </Link>
-                  <Link
-                    to="/all-my-notes"
-                    className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
-                    onClick={() => setIsNoteDropdownOpen(false)}
+                    <Link
+                      to="/create-note"
+                      className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
+                      onClick={() => setIsNoteDropdownOpen(false)}
+                    >
+                      📝Create Note
+                    </Link>
+                    <Link
+                      to="/all-my-notes"
+                      className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
+                      onClick={() => setIsNoteDropdownOpen(false)}
+                    >
+                      📒My Notes
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Task Dropdown */}
+                <div
+                  className="relative group"
+                  onMouseEnter={() => setIsTaskDropdownOpen(true)}
+                  onMouseLeave={() => setIsTaskDropdownOpen(false)}
+                >
+                  <button className="flex items-center space-x-2 text-white hover:bg-blue-900 hover:text-gray-100 px-4 py-2 rounded-md transition duration-300">
+                    <FaTasks className="mr-2" />
+                    Task
+                  </button>
+                  <div
+                    className={`absolute top-full right-0 mt-1 w-40 bg-white text-black shadow-lg rounded-md z-10 transition-opacity duration-300 ${
+                      isTaskDropdownOpen ? "opacity-100" : "opacity-0"
+                    }`}
                   >
-                    📒My Notes
-                  </Link>
+                    <Link
+                      to="/create-task"
+                      className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
+                      onClick={() => setIsTaskDropdownOpen(false)}
+                    >
+                      🗒️Create Task
+                    </Link>
+                    <Link
+                      to="/assigned-tasks"
+                      className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
+                      onClick={() => setIsTaskDropdownOpen(false)}
+                    >
+                      📋Assigned Tasks
+                    </Link>
+                    <Link
+                      to="/my-tasks" // เปลี่ยนจาก /assigned-tasks เป็น /my-tasks
+                      className="block px-4 py-2 hover:bg-blue-100 flex items-center text-sm"
+                      onClick={() => setIsTaskDropdownOpen(false)}
+                    >
+                      📋My Tasks
+                    </Link>
+                  </div>
                 </div>
               </div>
 
               <div
-                className="relative group"
+                className="relative group "
                 onMouseEnter={() => setIsProfileDropdownOpen(true)}
                 onMouseLeave={() => setIsProfileDropdownOpen(false)}
               >

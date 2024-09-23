@@ -6,6 +6,7 @@ import {
   getAllUsersCtrl,
   getMyProfileCtrl,
   getUserByIdCtrl,
+  getUsername,
   getUsersNameAndProfileImageCtrl,
   googleOAuthCtrl,
   loginCtrl,
@@ -21,10 +22,11 @@ import {
 import { singleUpload } from "../utils/multer.js";
 const userRouter = express.Router();
 // methods GET
-userRouter.get("/all-users", authMiddleware, adminMiddleware, getAllUsersCtrl);
+userRouter.get("/all-users", authMiddleware, getAllUsersCtrl);
 userRouter.get("/my-profile", authMiddleware, getMyProfileCtrl);
 userRouter.get("/user/:id", authMiddleware, getUserByIdCtrl);
 userRouter.get("/all-username-and-profile", getUsersNameAndProfileImageCtrl);
+userRouter.get("/username", authMiddleware, getUsername);
 
 // methods POST
 userRouter.post("/register", registerCtrl);

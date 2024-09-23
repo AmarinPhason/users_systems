@@ -43,7 +43,6 @@ export default function OAuth() {
 
       const data = await response.json();
       await login(data.user);
-      console.log("Login successful:", data);
       // Optionally, show a success message
       toast.success("Login successful!");
 
