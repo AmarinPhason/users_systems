@@ -67,6 +67,7 @@ app.use(
         frameSrc: [
           "'self'", // Allow iframes from the same origin
           "https://firebaseapp.com", // Allow Firebase hosted iframes
+          "https://users-systems.firebaseapp.com/", // Add this line
         ],
         objectSrc: ["'none'"], // Block loading any object (like Flash)
         upgradeInsecureRequests: [], // Automatically upgrade HTTP to HTTPS
