@@ -45,7 +45,23 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "trusted-scripts.com"],
+        scriptSrc: [
+          "'self'",
+          "https://apis.google.com",
+          "https://securetoken.googleapis.com",
+          "trusted-scripts.com",
+        ],
+        connectSrc: [
+          "'self'",
+          "https://securetoken.googleapis.com",
+          "https://firebase.googleapis.com",
+        ],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "https://res.cloudinary.com",
+          "https://your-image-url.com",
+        ],
         objectSrc: ["'none'"],
         upgradeInsecureRequests: [],
       },
