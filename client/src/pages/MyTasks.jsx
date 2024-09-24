@@ -401,7 +401,7 @@ const MyTasks = () => {
             <img
               src={fullImage}
               alt="Full View"
-              className="w-full h-[650px] object-cover" // กำหนดขนาดที่ 600x900
+              className="w-full h-[700px] object-cover" // กำหนดขนาดที่ 600x900
               // ปรับให้ใหญ่ขึ้น
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the image
             />
