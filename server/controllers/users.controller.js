@@ -7,6 +7,7 @@ import path from "path";
 import { setCookieOptions } from "../utils/cookieOptions.js";
 import { sendPasswordResetEmail } from "../utils/email.js";
 import { Note } from "../models/note.model.js";
+import { Task } from "../models/task.model.js";
 export const registerCtrl = async (req, res, next) => {
   const { username, email, password } = req.body;
   try {
@@ -229,25 +230,42 @@ export const deleteUserByIdCtrl = async (req, res, next) => {
 
 export const deleteMyAccountCtrl = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id); // ค้นหาผู้ใช้ตาม ID
 
     if (!user) {
-      return next(new AppError("User not found", 404));
+      return next(new AppError("User not found", 404)); // หากไม่พบผู้ใช้
     }
 
+    // ลบภาพโปรไฟล์จาก Cloudinary ถ้ามี
     if (user.profilePicture.public_id) {
       await cloudinary.v2.uploader.destroy(user.profilePicture.public_id);
     } else {
       console.log("No previous image to delete.");
     }
+
+    // ค้นหาและลบงานทั้งหมดที่สร้างโดยผู้ใช้
+    const tasks = await Task.find({ createdBy: req.user.id }); // ค้นหางานทั้งหมดที่สร้างโดยผู้ใช้
+    for (const task of tasks) {
+      if (task.image && task.image.public_id) {
+        // ลบภาพจาก Cloudinary
+        await cloudinary.v2.uploader.destroy(task.image.public_id);
+      }
+    }
+
+    // ลบงานทั้งหมดที่สร้างโดยผู้ใช้
+    await Task.deleteMany({ createdBy: req.user.id });
+
     // ลบโน้ตที่เกี่ยวข้องกับผู้ใช้
     await Note.deleteMany({ user: req.user.id });
+
+    // ลบผู้ใช้
     await user.deleteOne();
+
     res.status(200).json({
-      message: "Delete user successfully",
+      message: "Delete user and associated tasks successfully", // ข้อความยืนยันการลบ
     });
   } catch (error) {
-    next(error);
+    next(error); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
   }
 };
 
