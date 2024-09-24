@@ -88,7 +88,7 @@ const AssignedTasks = () => {
             <img
               src={selectedImage}
               alt="Full size"
-              className="w-[600px] h-[900px] object-cover" // กำหนดขนาดที่ 600x900
+              className="w-full h-[650px] object-cover" // กำหนดขนาดที่ 600x900
             />
             <button
               onClick={closeModal} // ปิด modal

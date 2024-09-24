@@ -193,15 +193,33 @@ const MyTasks = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {tasks.length > 0 ? (
           tasks.map((task) => (
-            <div key={task._id} className="bg-white p-4 rounded shadow-md">
-              <h2 className="text-xl font-semibold mt-2">{task.title}</h2>
+            <div
+              key={task._id}
+              className="bg-white p-4 rounded shadow-md transition-transform transform hover:scale-105"
+            >
+              <h2 className="text-xl font-semibold mt-2  ">{task.title}</h2>
               <p className="text-gray-600">{task.description}</p>
-              <p className="text-sm">Assigned to: {task.assignedTo.username}</p>
-              <p className="text-sm">Status: {task.status}</p>
-              <p className="text-sm">
-                Due Date: {new Date(task.dueDate).toLocaleDateString()}
-              </p>
-              <p className="text-sm">Priority: {task.priority}</p>
+
+              <div className="mt-2">
+                <p className="text-sm font-medium">Assigned to:</p>
+                <p className="text-sm text-gray-700">
+                  {task.assignedTo.username}
+                </p>
+              </div>
+              <div className="mt-2">
+                <p className="text-sm font-medium">Status:</p>
+                <p className="text-sm text-gray-700">{task.status}</p>
+              </div>
+              <div className="mt-2">
+                <p className="text-sm font-medium">Due Date:</p>
+                <p className="text-sm text-gray-700">
+                  {new Date(task.dueDate).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="mt-2">
+                <p className="text-sm font-medium">Priority:</p>
+                <p className="text-sm text-gray-700">{task.priority}</p>
+              </div>
 
               {/* Moved image to the bottom */}
               <img
@@ -215,7 +233,7 @@ const MyTasks = () => {
                 {/* ปุ่มแก้ไข */}
                 <button
                   onClick={() => handleEditClick(task)}
-                  className="text-blue-500"
+                  className="text-blue-500 hover:text-blue-700"
                 >
                   <AiFillEdit size={20} /> {/* ไอคอนแก้ไข */}
                 </button>
@@ -223,7 +241,7 @@ const MyTasks = () => {
                 {/* ปุ่มลบ */}
                 <button
                   onClick={() => handleDeleteTask(task._id)}
-                  className="text-red-500"
+                  className="text-red-500 hover:text-red-700"
                 >
                   <FaTrash size={20} /> {/* ไอคอนลบ */}
                 </button>
@@ -234,6 +252,7 @@ const MyTasks = () => {
           <p>No tasks available.</p>
         )}
       </div>
+
       {isEditing ? (
         <form
           onSubmit={(e) => {
@@ -382,11 +401,12 @@ const MyTasks = () => {
             <img
               src={fullImage}
               alt="Full View"
-              className="max-w-full max-h-full object-contain" // ปรับให้ใหญ่ขึ้น
+              className="w-full h-[650px] object-cover" // กำหนดขนาดที่ 600x900
+              // ปรับให้ใหญ่ขึ้น
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the image
             />
             <button
-              className="absolute top-2 right-2 bg-white text-black rounded px-2 py-1"
+              className="absolute top-2 right-2 bg-red-500 text-white rounded p-2"
               onClick={closeFullImage}
             >
               Close
