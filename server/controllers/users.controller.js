@@ -405,3 +405,18 @@ export const getUsername = async (req, res, next) => {
     next(error);
   }
 };
+
+export const nameAndImage = async (req, res, next) => {
+  try {
+    const users = await User.find().select("username profilePicture");
+
+    const countDoc = await User.countDocuments(); // นับจำนวนเอกสารทั้งหมด
+    res.status(200).json({
+      message: "Get users successfully",
+      count: countDoc,
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

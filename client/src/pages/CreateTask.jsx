@@ -12,6 +12,7 @@ const baseURL =
 const CreateTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [assignedTo, setAssignedTo] = useState("");
   const [image, setImage] = useState(null);
   const [status, setStatus] = useState("pending");
@@ -20,15 +21,18 @@ const CreateTask = () => {
   const [createdByUsername, setCreatedByUsername] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false); // State สำหรับ loading
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${baseURL}/api/v1/users/username`, {
+        const response = await axios.get(`${baseURL}/api/v1/users/user-image`, {
           withCredentials: true,
         });
         setUsers(response.data.data);
       } catch (error) {
+        console.log(error);
+
         toast.error("Failed to fetch users");
       }
     };
@@ -39,6 +43,8 @@ const CreateTask = () => {
           withCredentials: true,
         });
         setCreatedByUsername(response.data.data.username);
+        setCurrentUserId(response.data.data._id);
+        setAssignedTo(response.data.data._id);
       } catch (error) {
         toast.error("Failed to fetch user profile");
       }
@@ -123,6 +129,7 @@ const CreateTask = () => {
           </label>
           <input
             type="text"
+            required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -136,30 +143,71 @@ const CreateTask = () => {
           </label>
           <textarea
             value={description}
+            required
             onChange={(e) => setDescription(e.target.value)}
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             placeholder="Enter task description"
           />
         </div>
-
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Assigned To <FaUser className="inline ml-2" />
           </label>
-          <select
-            value={assignedTo}
-            onChange={(e) => setAssignedTo(e.target.value)}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          >
-            <option value="">Select user</option>
-            {users.map((user) => (
-              <option key={user._id} value={user._id}>
-                {user.username}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            >
+              {assignedTo
+                ? users.find((user) => user._id === assignedTo)?.username ||
+                  createdByUsername
+                : "Select user"}
+            </button>
+            {dropdownOpen && (
+              <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md max-h-60 overflow-y-auto">
+                <li
+                  onClick={() => {
+                    setAssignedTo(currentUserId);
+                    setDropdownOpen(false);
+                  }}
+                  className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  <img
+                    src={
+                      users.find((user) => user._id === currentUserId)
+                        ?.profilePicture?.url ||
+                      "https://via.placeholder.com/100"
+                    }
+                    alt="Your profile"
+                    className="w-6 h-6 rounded-full mr-2"
+                  />
+                  <span>{createdByUsername}</span>
+                </li>
+                {users.map((user) => (
+                  <li
+                    key={user._id}
+                    onClick={() => {
+                      setAssignedTo(user._id);
+                      setDropdownOpen(false);
+                    }}
+                    className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    <img
+                      src={
+                        user.profilePicture?.url ||
+                        "https://via.placeholder.com/100"
+                      }
+                      alt={`${user.username}'s profile`}
+                      className="w-6 h-6 rounded-full mr-2"
+                    />
+                    <span>{user.username}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Status

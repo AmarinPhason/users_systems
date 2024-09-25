@@ -11,6 +11,7 @@ import {
   googleOAuthCtrl,
   loginCtrl,
   logoutCtrl,
+  nameAndImage,
   registerCtrl,
   resetPasswordCtrl,
   updateProfileCtrl,
@@ -26,6 +27,7 @@ userRouter.get("/all-users", authMiddleware, getAllUsersCtrl);
 userRouter.get("/my-profile", authMiddleware, getMyProfileCtrl);
 userRouter.get("/user/:id", authMiddleware, getUserByIdCtrl);
 userRouter.get("/all-username-and-profile", getUsersNameAndProfileImageCtrl);
+userRouter.get("/user-image", nameAndImage);
 userRouter.get("/username", authMiddleware, getUsername);
 
 // methods POST
