@@ -322,15 +322,23 @@ export const resetPasswordCtrl = async (req, res, next) => {
   }
 };
 
-// get all Username & ProfileImage
 export const getUsersNameAndProfileImageCtrl = async (req, res, next) => {
   try {
-    const users = await User.find().select("username profilePicture");
-    const countDoc = await User.countDocuments();
+    const pageNum = parseInt(req.query.page) || 1; // หน้าปัจจุบัน (ค่าเริ่มต้นเป็นหน้า 1)
+    const limitNum = parseInt(req.query.limit) || 5; // จำนวนรายการต่อหน้า (ค่าเริ่มต้นเป็น 5)
 
+    // หา users โดยใช้ skip() และ limit()
+    const users = await User.find()
+      .select("username profilePicture")
+      .skip((pageNum - 1) * limitNum) // ข้ามเอกสารตามหน้าที่ระบุ
+      .limit(limitNum); // กำหนดจำนวนเอกสารที่จะดึงมา
+
+    const countDoc = await User.countDocuments(); // นับจำนวนเอกสารทั้งหมด
     res.status(200).json({
       message: "Get users successfully",
       count: countDoc,
+      totalPages: Math.ceil(countDoc / limitNum), // จำนวนหน้าทั้งหมด
+      currentPage: pageNum, // หน้าปัจจุบัน
       data: users,
     });
   } catch (error) {

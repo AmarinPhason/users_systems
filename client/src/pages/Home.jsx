@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../assets/Sky.png";
+
 const baseURL =
   import.meta.env.VITE_NODE_ENV === "development"
     ? "http://localhost:8000"
@@ -10,24 +11,44 @@ const Home = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1); // เก็บหน้าปัจจุบัน
+  const [totalPages, setTotalPages] = useState(1); // เก็บจำนวนหน้าทั้งหมด
+  const limit = 5; // จำนวนผู้ใช้ที่จะแสดงต่อหน้า
+
+  // ฟังก์ชันสำหรับดึงข้อมูลตามหน้าที่เลือก
+  const fetchUsers = async (page = 1) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${baseURL}/api/v1/users/all-username-and-profile?page=${page}&limit=${limit}`
+      );
+      setUsers(response.data.data);
+      setTotalUsers(response.data.count);
+      setTotalPages(response.data.totalPages);
+      setCurrentPage(page);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          `${baseURL}/api/v1/users/all-username-and-profile`
-        );
-        setUsers(response.data.data);
-        setTotalUsers(response.data.count);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-        setLoading(false);
-      }
-    };
+    fetchUsers(currentPage); // ดึงข้อมูลตามหน้าปัจจุบันเมื่อโหลดหน้า
+  }, [currentPage]);
 
-    fetchUsers();
-  }, []);
+  // ฟังก์ชันสำหรับการเปลี่ยนหน้า
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
 
   if (loading) {
     return (
@@ -70,10 +91,30 @@ const Home = () => {
               />
               <div className="flex flex-col">
                 <p className="text-lg font-semibold">{user.username}</p>
-                <p className="text-sm text-gray-600">{user.email}</p>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ปุ่ม Pagination */}
+        <div className="flex justify-center mt-6">
+          <button
+            className="px-4 py-2 mx-2 bg-gray-300 hover:bg-gray-400 rounded disabled:opacity-50"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2 mx-2">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className="px-4 py-2 mx-2 bg-gray-300 hover:bg-gray-400 rounded disabled:opacity-50"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

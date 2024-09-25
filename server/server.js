@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
 import { fileURLToPath } from "url";
+import rateLimit from "express-rate-limit";
 import { dirname } from "path";
 import path from "path";
 import cloudinary from "cloudinary";
@@ -22,7 +23,11 @@ cloudinary.v2.config({
 // Define __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 50 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+});
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "development"
@@ -39,52 +44,17 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use(limiter);
 app.use(cors(corsOptions));
-
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'"],
-//         scriptSrc: [
-//           "'self'",
-//           "https://apis.google.com",
-//           "https://securetoken.googleapis.com",
-//           "https://www.gstatic.com",
-//           "https://accounts.google.com",
-//         ],
-//         connectSrc: [
-//           "'self'",
-//           "https://securetoken.googleapis.com",
-//           "https://firebase.googleapis.com",
-//           "https://identitytoolkit.googleapis.com",
-//           "https://www.googleapis.com",
-//         ],
-//         imgSrc: [
-//           "'self'",
-//           "data:",
-//           "https://res.cloudinary.com",
-//           "https://your-image-url.com",
-//         ],
-//         frameSrc: [
-//           "'self'",
-//           "https://*.firebaseapp.com",
-//           "https://*.google.com",
-//         ],
-//         formAction: ["'self'", "https://accounts.google.com"], // เพิ่มบรรทัดนี้
-//         objectSrc: ["'none'"],
-//         upgradeInsecureRequests: [],
-//       },
-//     },
-//   })
-// );
-
 // Routes
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/notes", noteRouter);
 app.use("/api/v1/tasks", taskRouter);
 
 app.get("/test", (req, res) => {
+  res.send("Hello World2!");
+});
+app.get("/test2", (req, res) => {
   res.send("Hello World2!");
 });
 app.use(express.static(path.join(__dirname, "../client/dist")));
